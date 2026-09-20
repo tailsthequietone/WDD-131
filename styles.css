@@ -1,0 +1,113 @@
+/* Page Setup */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #000000;
+}
+
+/* Document Container Card */
+.container {
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    padding: 60px 70px;
+    max-width: 650px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Header Section */
+header {
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    letter-spacing: 3px;
+    font-weight: normal;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: #006eb6;
+    font-size: 0.82rem;
+    letter-spacing: 2.5px;
+    font-weight: bold;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #cce5ff;
+    width: 60%;
+    margin: 0 auto 35px auto;
+}
+
+/* Main Content */
+.content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.intro {
+    margin-bottom: 25px;
+    text-align: justify;
+}
+
+.italic-lead {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+ol {
+    padding-left: 28px;
+    margin: 0 0 40px 0;
+}
+
+ol li {
+    margin-bottom: 18px;
+    padding-left: 8px;
+    text-align: justify;
+}
+
+/* Footer & Logo Styling */
+footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.logo {
+    max-width: 120px;
+    height: auto;
+}
+
+.logo-text {
+    text-align: center;
+}
+
+.logo-text .byu {
+    display: block;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #006eb6;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.logo-text .idaho {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #006eb6;
+    letter-spacing: 4px;
+    margin-top: 4px;
+}
