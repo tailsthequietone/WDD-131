@@ -1,20 +1,19 @@
 const PI = 3.14;
 let radius = 3;
-let area = 0;
 
-area = radius * radius * PI;
-console.log("Area 1:", area);
+area1 = radius * radius * PI;
+console.log(area1);
 
 // Change radius and re-calculate
 radius = 4;
-area = radius * radius * PI;
-console.log("Area 2:", area);
+area2 = radius * radius * PI;
+console.log(area2);
 
 const one = 1;
-const two = '2';
+const two = 2;
 
-console.log(one + two); // Concatenates to "12" due to coercion
-console.log(one * two); // Converts '2' to a number and outputs 2
+console.log(one * two); // Concatenates to "12" due to coercion
+console.log(one + two); // Converts '2' to a number and outputs 2
 
 let course = "CSE131"; // Global scope
 
