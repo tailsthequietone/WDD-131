@@ -38,10 +38,17 @@ function addIndex()
     scriptureElements.forEach(renderNumber);
 }
 
-function toggleMenu(){}
-
-document.querySelector(".menu-but").addeventlistener("click", togglemenu)
+function toggleMenu(){
+    navEl.classlist.toggle("hide");
+    menuBtn.classlist.toggle("change");
+}
 
 addIndex()
 displayWelcome()
-          
+
+const menuBtn = document.querySelectorAll(".menu-btn")
+const navEl =document.querySelectorAll(".main-nav")
+
+
+
+menuBtn.addeventlistener("click", toggleMenu)
