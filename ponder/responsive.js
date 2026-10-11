@@ -38,17 +38,16 @@ function addIndex()
     scriptureElements.forEach(renderNumber);
 }
 
-function toggleMenu(){
-    navEl.classlist.toggle("hide");
-    menuBtn.classlist.toggle("change");
+const menuBtn = document.querySelector(".menu-btn");
+const navEl = document.querySelector(".main-nav");
+
+function toggleMenu() {
+  navEl.classList.toggle("show");
+  menuBtn.classList.toggle("change");
 }
+
+menuBtn.addEventListener("click", toggleMenu);
+
 
 addIndex()
 displayWelcome()
-
-const menuBtn = document.querySelectorAll(".menu-btn")
-const navEl =document.querySelectorAll(".main-nav")
-
-
-
-menuBtn.addeventlistener("click", toggleMenu)
