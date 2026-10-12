@@ -32,7 +32,25 @@ header h1 {
     cursor: pointer;
 }
 
-/* Hide links on mobile per instructions */
+/* Navigation Links */
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Hide navigation when .hide class is present */
 nav.hide {
     display: none;
 }
@@ -55,6 +73,7 @@ figure {
     background-color: white;
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
 .gallery img {
@@ -62,6 +81,39 @@ figure {
     height: 300px;
     object-fit: cover;
     display: block;
+}
+
+/* Modal / Viewer Overlay */
+.viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.viewer img {
+    max-width: 90%;
+    max-height: 80vh;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.close-viewer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    color: black;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
 /* Footer Styling */
@@ -83,26 +135,20 @@ footer {
 
 /* Media Query: Desktop Layout (1000px and up) */
 @media (min-width: 1000px) {
-    /* Hide menu button and display full top navigation bar */
     .menu-btn {
         display: none;
     }
 
-    nav.hide {
+    nav, nav.hide {
         display: flex;
+        flex-direction: row;
         justify-content: center;
         gap: 1.5rem;
         margin-top: 0.5rem;
     }
 
     nav a {
-        color: white;
-        text-decoration: none;
         font-size: 0.9rem;
-    }
-
-    nav a:hover {
-        text-decoration: underline;
     }
 
     .gallery {
