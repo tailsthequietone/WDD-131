@@ -1,0 +1,148 @@
+/* ==========================================================================
+   Base & Reset Styles
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222222;
+    background-color: #ffffff;
+    line-height: 1.5;
+    padding: 0 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Header & Navigation Styling */
+header {
+    border-bottom: 2px solid #f2c994;
+    padding-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.site-title {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    color: #4a1525; /* High contrast dark maroon */
+    margin-bottom: 1rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f2c994;
+}
+
+.nav-links a {
+    color: #a81124; /* High contrast red link */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    text-decoration: underline;
+    outline: 2px solid #a81124;
+    outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Mobile First Grid Layout (Default)
+   ========================================================================== */
+main {
+    padding: 2rem 0;
+}
+
+.book-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+/* Metadata formatting for mobile view */
+.book-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.95rem;
+    color: #333333;
+}
+
+.post-date {
+    font-style: italic;
+}
+
+.rating {
+    font-size: 1.1rem;
+}
+
+/* Book Content Formatting */
+.book-title {
+    font-family: Arial, sans-serif;
+    color: #a81124;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.book-cover {
+    max-width: 180px;
+    height: auto;
+    display: block;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.book-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #111111;
+}
+
+/* Footer Styling */
+footer {
+    border-top: 2px solid #f2c994;
+    border-bottom: 2px solid #f2c994;
+    padding: 1rem 0;
+    margin: 2rem 0 3rem 0;
+    text-align: center;
+}
+
+.author {
+    font-size: 0.95rem;
+    color: #333333;
+}
+
+/* ==========================================================================
+   Adaptive Media Query (Desktop / Larger Devices)
+   ========================================================================== */
+@media (min-width: 700px) {
+    .book-card {
+        grid-template-columns: 160px 1fr; /* 2-column layout */
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .book-meta {
+        text-align: right;
+        padding-right: 1.5rem;
+        border-right: 2px solid #f2c994; /* Vertical separator line */
+    }
+
+    .book-title {
+        font-size: 1.6rem;
+    }
+
+    .book-cover {
+        max-width: 220px;
+    }
+}
