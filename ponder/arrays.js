@@ -17,20 +17,31 @@ function convertToPoint(grade) {
             return 2;
         default:
             return 0;
-
     }
 }
 
 const gpaPoints = grades.map(convertToPoint);
-console.log(gpaPoints)
+console.log(gpaPoints);
 
 const fruit = ["watermelon", "peach", "apple", "tomato", "grape"];
 
 function testLength(item) {
-    if(item < 6) {
-        return true;
-    }
-    else return false
+    return item.length < 6;
 }
 
 const shortFruit = fruit.filter(testLength);
+
+const students = [
+    {last: 'Andrus', first: 'Aaron'},
+    {last: 'Masa', first: 'Manny'},
+    {last: 'Tanda', first: 'Tamanda'}
+];
+
+function studentTemplate(student) {
+    return `<div class="student-card">
+              <p>${student.first} ${student.last}</p>
+              <hr>
+            </div>`;
+}
+const studentsHtml = students.map(studentTemplate);
+document.querySelector("#studentList").innerHTML = studentsHtml.join("");
