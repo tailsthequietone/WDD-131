@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forms</title>
+    <script src="forms.js" defer></script>
+</head>
+<body>
+    <H1>Forms Demo</H1>
+    <form id="myform" action="" method="get">
+        <p>
+        <label for="fullName">Name</label>
+        <input type="text" 
+        id="fullName" 
+        name="fullName" 
+        placeholder="Enter your full name"
+        required 
+        />
+        </p>
+        <p>
+        <label for="dob">Dob</label>
+        <input type="date" 
+        id="dob" 
+        name="dob" 
+        placeholder="yyyy-mm-dd"
+        />
+        </p>
+        <p>
+            <label for="state">State</label>
+            <select name="state" id="state" required>
+            <option value="Choose State">Choose State</option>
+            <option value="AK">Alaska</option>
+            <option value="ID">Idaho</option>
+            </select>
+        </p>
+        <p>
+            <label for="email">Email</label>
+            <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            />
+        </p>
+        <button type="submit">Submit</button>
+        <button type="reset">Cancel</button>
+    </form>
+</body>
+</html>
