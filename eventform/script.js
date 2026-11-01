@@ -50,7 +50,7 @@ form.addEventListener("submit", function (event) {
   if (type === "student") {
     // Check if it contains exactly 9 characters
     if (condValue.length !== 9 || isNaN(condValue)) {
-      output.textContent = "Student I# must be 9 digits";
+      output.textContent = "Student ID# must be 9 digits";
       return;
     }
   } else if (type === "guest") {
