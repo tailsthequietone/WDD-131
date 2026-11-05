@@ -17,7 +17,19 @@ const aCourse = {
     days: 'TTh', 
     instructor: 'Sis A'
     }
-  ]
+  ],
+  enrollStudent: function(num, ) 
+  {
+    const theSection = this.sections.find(section => section.sectionNum === num);
+    console.log(theSection);
+    theSection.enrolled++;
+  },
+  dropStudent: function(num, ) 
+  {
+    const theSection = this.sections.find(section => section.sectionNum === num);
+    console.log(theSection);
+    theSection.enrolled--;
+  }
 };
 
 
@@ -39,8 +51,14 @@ function sectionTemplate(section) {
 
 function renderSections(sections) {
   const html = sections.map(sectionTemplate);
-  document.querySelector("#sections").innerHTML = html.join("");
+document.querySelector("#sections").innerHTML = html.join("");
 }
 
 setCourseInfo(aCourse);
 renderSections(aCourse.sections);
+
+function enrollHandler(ev) {
+  console.log(ev);
+}
+
+document.querySelector("#enrollStudent").addEventListener("click", enrollHandler)
