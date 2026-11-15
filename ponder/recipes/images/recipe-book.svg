@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Main book cover -->
+  <rect x="14" y="10" width="56" height="80" rx="4" fill="#ffffff"/>
+  <!-- Spine line -->
+  <line x1="24" y1="10" x2="24" y2="90"/>
+  <!-- Bookmark tabs on right -->
+  <polyline points="70,22 86,25 82,42 70,40"/>
+  <polyline points="70,44 84,48 79,64 70,61"/>
+  <!-- Chef hat inside book -->
+  <path d="M37 46 C32 46 30 40 34 36 C34 30 41 27 47 30 C53 27 60 30 60 36 C64 40 62 46 57 46 L57 56 L37 56 Z"/>
+  <line x1="37" y1="51" x2="57" y2="51"/>
+</svg>
