@@ -85,12 +85,14 @@ console.log(anotherSort);
 
 function searchlist(list, query)
 {
-  function searchCallback(string){
-    return string.includes(query.toLowerCase());
+  function searchCallback(hike){
+    return hike.name.toLowerCase().includes (query.toLowerCase()) ||
+    hike.description.toLowerCase().includes (query.toLowerCase()) ||
+    hike.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   };
 const filteredlist = list.filter(searchCallback);
 return filteredlist;
 }
 
-const filtered = searchlist(simpleList, "b")
+const filtered = searchlist(hikes, "mod");
 console.log(filtered)
