@@ -274,19 +274,16 @@ const recipes = [
   }
 ];
 
-// Return a random number between 0 and num-1
 function random(num) {
   return Math.floor(Math.random() * num);
 }
 
-// Return a random entry from an array
 function getRandomListEntry(list) {
   const listLength = list.length;
   const randomNum = random(listLength);
   return list[randomNum];
 }
 
-// Generate the HTML for the tags
 function tagsTemplate(tags) {
   let html = "";
   tags.forEach(tag => {
@@ -295,7 +292,6 @@ function tagsTemplate(tags) {
   return html;
 }
 
-// Generate the HTML for the star rating
 function ratingTemplate(rating) {
   let html = "";
   for (let i = 1; i <= 5; i++) {
@@ -308,7 +304,6 @@ function ratingTemplate(rating) {
   return html;
 }
 
-// Generate the HTML for a single recipe card
 function recipeTemplate(recipe) {
   return `<article class="recipe-card">
     <img src="${recipe.image}" alt="${recipe.name}" class="recipe-image">
@@ -327,20 +322,17 @@ function recipeTemplate(recipe) {
   </article>`;
 }
 
-// Render a list of recipes into the DOM
 function renderRecipes(recipeList) {
   const main = document.querySelector('main');
   const recipeHTML = recipeList.map(recipeTemplate).join("");
   main.innerHTML = recipeHTML;
 }
 
-// Initialize the page with one random recipe
 function init() {
   const randomRecipe = getRandomListEntry(recipes);
   renderRecipes([randomRecipe]);
 }
 
-// Filter the recipes array by search query (checks name, description, tags)
 function filterRecipes(query) {
   const searchLower = query.toLowerCase();
   const filtered = recipes.filter(recipe => {
@@ -351,12 +343,10 @@ function filterRecipes(query) {
     );
   });
 
-  // Sort the matching recipes alphabetically by name
   const sorted = filtered.sort((a, b) => a.name.localeCompare(b.name));
   return sorted;
 }
 
-// Handle the form submit event
 function searchHandler(e) {
   e.preventDefault(); 
   const query = document.getElementById("search").value;
@@ -364,8 +354,6 @@ function searchHandler(e) {
   renderRecipes(filteredRecipes);
 }
 
-// Run the initialization on load
 window.addEventListener('load', init);
 
-// Attach event listener to the search form
 document.querySelector('.search-form').addEventListener('submit', searchHandler);
