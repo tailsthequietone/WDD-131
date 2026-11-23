@@ -29,7 +29,6 @@ img {
   display: block;
 }
 
-/* Header: Logo + Title & Search Form */
 header {
   display: flex;
   flex-direction: column;
@@ -60,7 +59,6 @@ header {
   color: #000000;
 }
 
-/* Search Bar */
 .search-form {
   display: flex;
   width: 100%;
