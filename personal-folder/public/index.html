@@ -1,83 +1,281 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan Our Date! ✨</title>
+    <title>Plan Our Date ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="card-container">
-        <div class="step active" id="step-1">
-            <h1>Will you go out with me? 🥺</h1>
-            <div class="btn-group">
-                <button class="btn success-btn" onclick="nextStep(2)">Yes! 💖</button>
-                <button class="btn danger-btn" id="no-btn" onmouseover="dodgeButton()">No  </button>
+    <main class="card-container">
+        <!-- Progress Bar (hidden on Step 1) -->
+        <div class="progress-wrapper" id="progress-wrapper">
+            <div class="progress-meta">
+                <span id="step-label">Step 1 of 6</span>
+                <span id="step-percent">17%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
             </div>
         </div>
 
-        <div class="step" id="step-2">
-            <h2>What are we eating? 🍔</h2>
+        <!-- STEP 1: Invitation -->
+        <section class="step active" id="step-1">
+            <span class="eyebrow">You're Invited</span>
+            <h1>Will you go out with me?</h1>
+            <p class="subtitle">Take a quick minute to tell me a little about yourself and help plan our date.</p>
+            <div class="btn-group">
+                <button class="btn primary-btn" onclick="nextStep(2)">Yes, I'd love to ✨</button>
+                <button class="btn ghost-btn" id="no-btn" onmouseover="dodgeButton()" ontouchstart="dodgeButton()">No thanks</button>
+            </div>
+        </section>
+
+        <!-- STEP 2: About You (Basics) -->
+        <section class="step" id="step-2">
+            <span class="eyebrow">First Things First</span>
+            <h2>Tell me about you</h2>
+            <p class="subtitle">Just a few quick details so I can personalize the evening.</p>
+
+            <div class="form-stack">
+                <div class="field-group">
+                    <label for="name-input">Your Name <span class="required">*</span></label>
+                    <input type="text" id="name-input" placeholder="e.g., Emma" oninput="validateStep2()">
+                </div>
+
+                <div class="field-group">
+                    <label for="hometown-input">Where are you from / What are you studying?</label>
+                    <input type="text" id="hometown-input" placeholder="e.g., Utah • Nursing major">
+                </div>
+
+                <div class="field-group">
+                    <label for="dietary-input">Any allergies or food preferences?</label>
+                    <input type="text" id="dietary-input" placeholder="e.g., Gluten-free, love spicy food, no allergies">
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn back-btn" onclick="nextStep(1)">Back</button>
+                <button class="btn primary-btn" id="step2-next" onclick="saveStep2AndNext()" disabled>Continue</button>
+            </div>
+        </section>
+
+        <!-- STEP 3: Mutual-Style Profile Questions -->
+        <section class="step" id="step-3">
+            <span class="eyebrow">Profile Snapshot</span>
+            <h2>What's your vibe?</h2>
+            <p class="subtitle">Pick up to 5 interests and answer a quick prompt.</p>
+
+            <div class="form-stack">
+                <div class="field-group">
+                    <label>Your Interests <span class="required">*</span> <span class="hint" id="interest-counter">(0/5 selected)</span></label>
+                    <div class="chip-grid" id="interest-chips">
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Pickleball')">🏓 Pickleball</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Hiking')">🥾 Hiking</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Soda Runs')">🥤 Soda Runs</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Live Music')">🎸 Live Music</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Baking & Cooking')">🍪 Baking</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Board Games')">🎲 Board Games</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Road Trips')">🚗 Road Trips</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Movies')">🎬 Movies</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Photography')">📸 Photography</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Reading')">📚 Reading</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Fitness')">🏋️‍♀️ Fitness</button>
+                        <button type="button" class="chip" onclick="toggleInterest(this, 'Art & Crafts')">🎨 Art & Crafts</button>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="prompt-select">Pick a prompt <span class="required">*</span></label>
+                    <select id="prompt-select" onchange="validateStep3()">
+                        <option value="My go-to soda or treat order is...">My go-to soda or treat order is...</option>
+                        <option value="My ideal Saturday looks like...">My ideal Saturday looks like...</option>
+                        <option value="A quick way to win me over is...">A quick way to win me over is...</option>
+                        <option value="I could talk for hours about...">I could talk for hours about...</option>
+                        <option value="Two truths and a lie about me:">Two truths and a lie about me:</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label for="prompt-answer">Your Answer <span class="required">*</span></label>
+                    <textarea id="prompt-answer" rows="3" placeholder="Write your answer here..." oninput="validateStep3()"></textarea>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn back-btn" onclick="nextStep(2)">Back</button>
+                <button class="btn primary-btn" id="step3-next" onclick="saveStep3AndNext()" disabled>Continue</button>
+            </div>
+        </section>
+
+        <!-- STEP 4: Food -->
+        <section class="step" id="step-4">
+            <span class="eyebrow">Dinner Plans</span>
+            <h2>What are we eating?</h2>
+            <p class="subtitle">Choose whatever sounds best to you.</p>
+
             <div class="grid-options">
                 <div class="option-card" onclick="selectOption('food', 'BBQ 🍖', this)">
-                    <span class="emoji">🍖</span><h3>BBQ</h3>
+                    <span class="emoji">🍖</span>
+                    <h3>BBQ</h3>
                 </div>
                 <div class="option-card" onclick="selectOption('food', 'Tacos 🌮', this)">
-                    <span class="emoji">🌮</span><h3>Tacos</h3>
+                    <span class="emoji">🌮</span>
+                    <h3>Tacos</h3>
                 </div>
                 <div class="option-card" onclick="selectOption('food', 'Pizza 🍕', this)">
-                    <span class="emoji">🍕</span><h3>Pizza</h3>
+                    <span class="emoji">🍕</span>
+                    <h3>Pizza</h3>
                 </div>
                 <div class="option-card" onclick="selectOption('food', 'Burgers & Shakes 🍔', this)">
-                    <span class="emoji">🍔</span><h3>Burgers & Shakes</h3>
+                    <span class="emoji">🍔</span>
+                    <h3>Burgers & Shakes</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('food', 'Italian 🍝', this)">
+                    <span class="emoji">🍝</span>
+                    <h3>Italian</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('food', 'Other', this)">
+                    <span class="emoji">✨</span>
+                    <h3>Something Else</h3>
                 </div>
             </div>
-            <button class="btn next-btn" onclick="nextStep(3)" disabled id="food-next">Next Step ➡️</button>
-        </div>
 
-        <div class="step" id="step-3">
-            <h2>What are we doing after? 🗺️</h2>
+            <input type="text" class="custom-input" id="custom-food-input" placeholder="What are you craving?" oninput="handleCustomInput('food')" style="display: none;">
+
+            <div class="nav-actions">
+                <button class="btn back-btn" onclick="nextStep(3)">Back</button>
+                <button class="btn primary-btn" id="food-next" onclick="nextStep(5)" disabled>Continue</button>
+            </div>
+        </section>
+
+        <!-- STEP 5: Activity -->
+        <section class="step" id="step-5">
+            <span class="eyebrow">The Fun Part</span>
+            <h2>What are we doing after?</h2>
+            <p class="subtitle">Pick an activity or suggest your own idea.</p>
+
             <div class="grid-options">
                 <div class="option-card" onclick="selectOption('activity', 'Temple 🙏', this)">
-                    <span class="emoji">🙏</span><h3>Temple</h3>
+                    <span class="emoji">🙏</span>
+                    <h3>Temple</h3>
                 </div>
                 <div class="option-card" onclick="selectOption('activity', 'Movie Night 🎬', this)">
-                    <span class="emoji">🎬</span><h3>Movie</h3>
+                    <span class="emoji">🎬</span>
+                    <h3>Movie Night</h3>
                 </div>
                 <div class="option-card" onclick="selectOption('activity', 'Hike / Walk 🥾', this)">
-                    <span class="emoji">🥾</span><h3>Hike/Walk</h3>
+                    <span class="emoji">🥾</span>
+                    <h3>Hike / Walk</h3>
                 </div>
-                <div class="option-card" id="other-card" onclick="selectOption('activity', 'Other', this)">
-                    <span class="emoji">✨</span><h3>Other...</h3>
+                <div class="option-card" onclick="selectOption('activity', 'Bowling / Games 🎳', this)">
+                    <span class="emoji">🎳</span>
+                    <h3>Bowling / Games</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('activity', 'Ice Cream / Soda Run 🍦', this)">
+                    <span class="emoji">🍦</span>
+                    <h3>Ice Cream / Soda</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('activity', 'Other', this)">
+                    <span class="emoji">✨</span>
+                    <h3>Other...</h3>
                 </div>
             </div>
-            
-            <input type="text" id="custom-activity-input" placeholder="What do you have in mind? 👀" oninput="handleCustomActivityInput()" style="display: none;">
 
-            <button class="btn next-btn" onclick="nextStep(4)" disabled id="activity-next">Next Step ➡️</button>
-        </div>
+            <input type="text" class="custom-input" id="custom-activity-input" placeholder="What do you have in mind?" oninput="handleCustomInput('activity')" style="display: none;">
 
-        <div class="step" id="step-4">
-            <h2>Pick a day and time 🗓️</h2>
-            <div class="inputs-container">
-                <input type="date" id="date-input" onchange="checkDateTimeValidity()">
-                <input type="time" id="time-input" onchange="checkDateTimeValidity()">
+            <div class="nav-actions">
+                <button class="btn back-btn" onclick="nextStep(4)">Back</button>
+                <button class="btn primary-btn" id="activity-next" onclick="nextStep(6)" disabled>Continue</button>
             </div>
-            <button class="btn next-btn" onclick="buildSummary()" disabled id="time-next">Finalize Date 🎉</button>
-        </div>
+        </section>
 
-        <div class="step" id="step-5">
-            <h2>It's a Date! 🥰</h2>
-            <div class="summary-box">
-                <p><strong>Food:</strong> <span id="summary-food"></span></p>
-                <p><strong>Activity:</strong> <span id="summary-activity"></span></p>
-                <p><strong>When:</strong> <span id="summary-time"></span></p>
+        <!-- STEP 6: Date & Time -->
+        <section class="step" id="step-6">
+            <span class="eyebrow">Save the Date</span>
+            <h2>When works best?</h2>
+            <p class="subtitle">We'll generate a calendar invite for you on the next screen.</p>
+
+            <div class="form-stack">
+                <div class="field-group">
+                    <label for="date-input">Date <span class="required">*</span></label>
+                    <input type="date" id="date-input" onchange="checkDateTimeValidity()">
+                </div>
+
+                <div class="two-col">
+                    <div class="field-group">
+                        <label for="time-input">Start Time <span class="required">*</span></label>
+                        <input type="time" id="time-input" onchange="checkDateTimeValidity()">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="duration-input">Est. Length</label>
+                        <select id="duration-input" onchange="checkDateTimeValidity()">
+                            <option value="2">2 hours</option>
+                            <option value="3" selected>3 hours</option>
+                            <option value="4">4 hours</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <p class="final-note">Take a screenshot and send it to me! 📸</p>
-        </div>
-    </div>
+
+            <div class="nav-actions">
+                <button class="btn back-btn" onclick="nextStep(5)">Back</button>
+                <button class="btn primary-btn" id="time-next" onclick="buildSummary()" disabled>Finalize Date</button>
+            </div>
+        </section>
+
+        <!-- STEP 7: Summary & .ICS Download -->
+        <section class="step" id="step-7">
+            <span class="eyebrow">Confirmed</span>
+            <h2 id="summary-heading">It's a Date!</h2>
+            <p class="subtitle">Add this to your calendar below, or copy the details to text me.</p>
+
+            <div class="summary-card">
+                <div class="summary-section">
+                    <h4>Date Itinerary</h4>
+                    <div class="summary-row">
+                        <span class="label">When</span>
+                        <span class="value" id="summary-time"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Food</span>
+                        <span class="value" id="summary-food"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Activity</span>
+                        <span class="value" id="summary-activity"></span>
+                    </div>
+                    <div class="summary-row" id="summary-dietary-row" style="display: none;">
+                        <span class="label">Food Notes</span>
+                        <span class="value" id="summary-dietary"></span>
+                    </div>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-section">
+                    <h4>About <span id="summary-name">You</span></h4>
+                    <p class="summary-meta" id="summary-hometown" style="display: none;"></p>
+                    <div class="summary-chips" id="summary-interests"></div>
+                    <div class="prompt-card">
+                        <span class="prompt-q" id="summary-prompt-q"></span>
+                        <p class="prompt-a" id="summary-prompt-a"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-actions">
+                <button class="btn primary-btn full-width" onclick="downloadICS()">📅 Add to Calendar (.ics)</button>
+                <button class="btn secondary-btn full-width" id="copy-btn" onclick="copySummary()">📋 Copy Details to Text Me</button>
+            </div>
+
+            <button class="text-link" onclick="nextStep(6)">Edit date details</button>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
