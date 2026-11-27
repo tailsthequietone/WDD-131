@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Our Date! ✨</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="step active" id="step-1">
+            <h1>Will you go out with me? 🥺</h1>
+            <div class="btn-group">
+                <button class="btn success-btn" onclick="nextStep(2)">Yes! 💖</button>
+                <button class="btn danger-btn" id="no-btn" onmouseover="dodgeButton()">No  </button>
+            </div>
+        </div>
+
+        <div class="step" id="step-2">
+            <h2>What are we eating? 🍔</h2>
+            <div class="grid-options">
+                <div class="option-card" onclick="selectOption('food', 'BBQ 🍖', this)">
+                    <span class="emoji">🍖</span><h3>BBQ</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('food', 'Tacos 🌮', this)">
+                    <span class="emoji">🌮</span><h3>Tacos</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('food', 'Pizza 🍕', this)">
+                    <span class="emoji">🍕</span><h3>Pizza</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('food', 'Burgers & Shakes 🍔', this)">
+                    <span class="emoji">🍔</span><h3>Burgers & Shakes</h3>
+                </div>
+            </div>
+            <button class="btn next-btn" onclick="nextStep(3)" disabled id="food-next">Next Step ➡️</button>
+        </div>
+
+        <div class="step" id="step-3">
+            <h2>What are we doing after? 🗺️</h2>
+            <div class="grid-options">
+                <div class="option-card" onclick="selectOption('activity', 'Temple 🙏', this)">
+                    <span class="emoji">🙏</span><h3>Temple</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('activity', 'Movie Night 🎬', this)">
+                    <span class="emoji">🎬</span><h3>Movie</h3>
+                </div>
+                <div class="option-card" onclick="selectOption('activity', 'Hike / Walk 🥾', this)">
+                    <span class="emoji">🥾</span><h3>Hike/Walk</h3>
+                </div>
+                <div class="option-card" id="other-card" onclick="selectOption('activity', 'Other', this)">
+                    <span class="emoji">✨</span><h3>Other...</h3>
+                </div>
+            </div>
+            
+            <input type="text" id="custom-activity-input" placeholder="What do you have in mind? 👀" oninput="handleCustomActivityInput()" style="display: none;">
+
+            <button class="btn next-btn" onclick="nextStep(4)" disabled id="activity-next">Next Step ➡️</button>
+        </div>
+
+        <div class="step" id="step-4">
+            <h2>Pick a day and time 🗓️</h2>
+            <div class="inputs-container">
+                <input type="date" id="date-input" onchange="checkDateTimeValidity()">
+                <input type="time" id="time-input" onchange="checkDateTimeValidity()">
+            </div>
+            <button class="btn next-btn" onclick="buildSummary()" disabled id="time-next">Finalize Date 🎉</button>
+        </div>
+
+        <div class="step" id="step-5">
+            <h2>It's a Date! 🥰</h2>
+            <div class="summary-box">
+                <p><strong>Food:</strong> <span id="summary-food"></span></p>
+                <p><strong>Activity:</strong> <span id="summary-activity"></span></p>
+                <p><strong>When:</strong> <span id="summary-time"></span></p>
+            </div>
+            <p class="final-note">Take a screenshot and send it to me! 📸</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
