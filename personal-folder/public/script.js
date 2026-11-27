@@ -1,13 +1,40 @@
 const TOTAL_PLANNING_STEPS = 6; // Steps 2 through 7
-const MAX_INTERESTS = 5;
+
+const SLIDER_LABELS = {
+    planning: {
+        1: 'Totally spontaneous',
+        2: 'Mostly go with the flow',
+        3: 'Mix of planned & spontaneous',
+        4: 'Like a loose game plan',
+        5: 'Love a thoughtful itinerary'
+    },
+    pace: {
+        1: 'Super cozy & low-key',
+        2: 'Relaxed & unhurried',
+        3: 'Balanced pace',
+        4: 'Upbeat & active',
+        5: 'Full-on adventure'
+    },
+    convo: {
+        1: 'Mostly laughs & banter',
+        2: 'Playful & easygoing',
+        3: 'Mix of laughs & depth',
+        4: 'Thoughtful & curious',
+        5: 'Deep late-night talks'
+    }
+};
 
 const datePlan = {
     name: '',
-    hometown: '',
     dietary: '',
-    interests: [],
+    vibes: {
+        planning: SLIDER_LABELS.planning[3],
+        pace: SLIDER_LABELS.pace[3],
+        convo: SLIDER_LABELS.convo[3]
+    },
     promptQuestion: '',
     promptAnswer: '',
+    currentlyInto: '',
     food: '',
     activity: '',
     date: '',
@@ -78,7 +105,14 @@ function dodgeButton() {
     noBtn.style.zIndex = '999';
 }
 
-/* --- Step 2: About You --- */
+/* --- Step 2: Basics & Vibe Sliders --- */
+function updateSlider(key) {
+    const val = document.getElementById(`slider-${key}`).value;
+    const text = SLIDER_LABELS[key][val];
+    document.getElementById(`label-${key}`).textContent = text;
+    datePlan.vibes[key] = text;
+}
+
 function validateStep2() {
     const name = document.getElementById('name-input').value.trim();
     document.getElementById('step2-next').disabled = name.length === 0;
@@ -86,38 +120,36 @@ function validateStep2() {
 
 function saveStep2AndNext() {
     datePlan.name = document.getElementById('name-input').value.trim();
-    datePlan.hometown = document.getElementById('hometown-input').value.trim();
     datePlan.dietary = document.getElementById('dietary-input').value.trim();
     nextStep(3);
 }
 
-/* --- Step 3: Mutual-Style Profile Questions --- */
-function toggleInterest(button, interest) {
-    const idx = datePlan.interests.indexOf(interest);
+/* --- Step 3: Thoughtful Story-Starter Prompts --- */
+function selectPrompt(button, questionText) {
+    document.querySelectorAll('.prompt-option').forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
 
-    if (idx > -1) {
-        datePlan.interests.splice(idx, 1);
-        button.classList.remove('selected');
-    } else {
-        if (datePlan.interests.length >= MAX_INTERESTS) return;
-        datePlan.interests.push(interest);
-        button.classList.add('selected');
-    }
+    datePlan.promptQuestion = questionText;
 
-    document.getElementById('interest-counter').textContent =
-        `(${datePlan.interests.length}/${MAX_INTERESTS} selected)`;
+    const answerGroup = document.getElementById('prompt-answer-group');
+    const answerInput = document.getElementById('prompt-answer');
+    document.getElementById('prompt-answer-label').innerHTML =
+        `${questionText} <span class="required">*</span>`;
+
+    answerGroup.style.display = 'flex';
+    answerInput.focus();
     validateStep3();
 }
 
 function validateStep3() {
     const answer = document.getElementById('prompt-answer').value.trim();
-    const isValid = datePlan.interests.length > 0 && answer.length > 0;
+    const isValid = datePlan.promptQuestion.length > 0 && answer.length > 0;
     document.getElementById('step3-next').disabled = !isValid;
 }
 
 function saveStep3AndNext() {
-    datePlan.promptQuestion = document.getElementById('prompt-select').value;
     datePlan.promptAnswer = document.getElementById('prompt-answer').value.trim();
+    datePlan.currentlyInto = document.getElementById('currently-input').value.trim();
     nextStep(4);
 }
 
@@ -192,7 +224,7 @@ function formatReadableDateTime(dateStr, timeStr) {
 /* --- Step 7: Summary --- */
 function buildSummary() {
     document.getElementById('summary-heading').textContent = `It's a Date, ${datePlan.name}!`;
-    document.getElementById('summary-name').textContent = datePlan.name;
+    document.getElementById('summary-name').textContent = `${datePlan.name}'s`;
     document.getElementById('summary-food').textContent = datePlan.food;
     document.getElementById('summary-activity').textContent = datePlan.activity;
     document.getElementById('summary-time').textContent = formatReadableDateTime(datePlan.date, datePlan.time);
@@ -206,34 +238,56 @@ function buildSummary() {
         dietaryRow.style.display = 'none';
     }
 
-    // Optional hometown / major
-    const hometownEl = document.getElementById('summary-hometown');
-    if (datePlan.hometown) {
-        hometownEl.textContent = datePlan.hometown;
-        hometownEl.style.display = 'block';
-    } else {
-        hometownEl.style.display = 'none';
-    }
-
-    // Interest badges
-    const chipsContainer = document.getElementById('summary-interests');
-    chipsContainer.innerHTML = '';
-    datePlan.interests.forEach(interest => {
+    // Vibe badges
+    const vibesContainer = document.getElementById('summary-vibes');
+    vibesContainer.innerHTML = '';
+    Object.values(datePlan.vibes).forEach(vibeText => {
         const span = document.createElement('span');
         span.className = 'summary-chip';
-        span.textContent = interest;
-        chipsContainer.appendChild(span);
+        span.textContent = vibeText;
+        vibesContainer.appendChild(span);
     });
 
-    // Prompt Q&A
+    // Story Prompt Q&A
     document.getElementById('summary-prompt-q').textContent = datePlan.promptQuestion;
     document.getElementById('summary-prompt-a').textContent = datePlan.promptAnswer;
+
+    // Optional "Currently into"
+    const currentlyRow = document.getElementById('summary-currently-row');
+    if (datePlan.currentlyInto) {
+        document.getElementById('summary-currently').textContent = datePlan.currentlyInto;
+        currentlyRow.style.display = 'block';
+    } else {
+        currentlyRow.style.display = 'none';
+    }
 
     nextStep(7);
 }
 
-/* --- .ICS Calendar File Generator (RFC 5545) --- */
-function formatICSDateUTC(dateObj) {
+/* --- Shared Event Details Builder --- */
+function getEventMetadata() {
+    const startDate = parseLocalDateTime(datePlan.date, datePlan.time);
+    const endDate = new Date(startDate.getTime() + datePlan.durationHours * 60 * 60 * 1000);
+    const title = `Date Night with ${datePlan.name}: ${datePlan.food} & ${datePlan.activity}`;
+
+    const descriptionLines = [
+        `Food: ${datePlan.food}`,
+        `Activity: ${datePlan.activity}`,
+        datePlan.dietary ? `Food Notes: ${datePlan.dietary}` : null,
+        `Vibe: ${Object.values(datePlan.vibes).join(' • ')}`,
+        `${datePlan.promptQuestion} ${datePlan.promptAnswer}`,
+        datePlan.currentlyInto ? `Currently into: ${datePlan.currentlyInto}` : null
+    ].filter(Boolean);
+
+    return {
+        startDate,
+        endDate,
+        title,
+        description: descriptionLines.join('\n')
+    };
+}
+
+function formatCalendarUTC(dateObj) {
     const pad = n => String(n).padStart(2, '0');
     return (
         dateObj.getUTCFullYear() +
@@ -247,6 +301,22 @@ function formatICSDateUTC(dateObj) {
     );
 }
 
+/* --- Option 1: One-Click Google Calendar (Desktop & Mobile Web) --- */
+function openGoogleCalendar() {
+    const { startDate, endDate, title, description } = getEventMetadata();
+    const dates = `${formatCalendarUTC(startDate)}/${formatCalendarUTC(endDate)}`;
+
+    const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: title,
+        dates: dates,
+        details: description
+    });
+
+    window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank', 'noopener,noreferrer');
+}
+
+/* --- Option 2: Download .ICS File (RFC 5545 for Apple Calendar / Outlook) --- */
 function escapeICS(text) {
     return String(text)
         .replace(/\\/g, '\\\\')
@@ -256,19 +326,8 @@ function escapeICS(text) {
 }
 
 function downloadICS() {
-    const startDate = parseLocalDateTime(datePlan.date, datePlan.time);
-    const endDate = new Date(startDate.getTime() + datePlan.durationHours * 60 * 60 * 1000);
+    const { startDate, endDate, title, description } = getEventMetadata();
     const now = new Date();
-
-    const descriptionLines = [
-        `Date with ${datePlan.name}`,
-        `Food: ${datePlan.food}`,
-        `Activity: ${datePlan.activity}`,
-        datePlan.dietary ? `Food Notes: ${datePlan.dietary}` : null,
-        datePlan.hometown ? `About: ${datePlan.hometown}` : null,
-        `Interests: ${datePlan.interests.join(', ')}`,
-        `${datePlan.promptQuestion} ${datePlan.promptAnswer}`
-    ].filter(Boolean);
 
     const icsLines = [
         'BEGIN:VCALENDAR',
@@ -278,11 +337,11 @@ function downloadICS() {
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
         `UID:${Date.now()}@date-scheduler`,
-        `DTSTAMP:${formatICSDateUTC(now)}`,
-        `DTSTART:${formatICSDateUTC(startDate)}`,
-        `DTEND:${formatICSDateUTC(endDate)}`,
-        `SUMMARY:${escapeICS(`Date Night: ${datePlan.food} & ${datePlan.activity}`)}`,
-        `DESCRIPTION:${escapeICS(descriptionLines.join('\n'))}`,
+        `DTSTAMP:${formatCalendarUTC(now)}`,
+        `DTSTART:${formatCalendarUTC(startDate)}`,
+        `DTEND:${formatCalendarUTC(endDate)}`,
+        `SUMMARY:${escapeICS(title)}`,
+        `DESCRIPTION:${escapeICS(description)}`,
         'END:VEVENT',
         'END:VCALENDAR'
     ];
@@ -301,16 +360,12 @@ function downloadICS() {
 
 /* --- Copy Summary Helper --- */
 function copySummary() {
+    const { description } = getEventMetadata();
     const text = [
         `It's a Date! (${datePlan.name})`,
         `When: ${formatReadableDateTime(datePlan.date, datePlan.time)}`,
-        `Food: ${datePlan.food}`,
-        `Activity: ${datePlan.activity}`,
-        datePlan.dietary ? `Food Notes: ${datePlan.dietary}` : null,
-        datePlan.hometown ? `About Me: ${datePlan.hometown}` : null,
-        `Interests: ${datePlan.interests.join(', ')}`,
-        `${datePlan.promptQuestion} ${datePlan.promptAnswer}`
-    ].filter(Boolean).join('\n');
+        description
+    ].join('\n');
 
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copy-btn');

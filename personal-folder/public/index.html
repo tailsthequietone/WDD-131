@@ -27,18 +27,18 @@
         <section class="step active" id="step-1">
             <span class="eyebrow">You're Invited</span>
             <h1>Will you go out with me?</h1>
-            <p class="subtitle">Take a quick minute to tell me a little about yourself and help plan our date.</p>
+            <p class="subtitle">Take a quick minute to share your vibe and help put together our ideal evening.</p>
             <div class="btn-group">
                 <button class="btn primary-btn" onclick="nextStep(2)">Yes, I'd love to ✨</button>
                 <button class="btn ghost-btn" id="no-btn" onmouseover="dodgeButton()" ontouchstart="dodgeButton()">No thanks</button>
             </div>
         </section>
 
-        <!-- STEP 2: About You (Basics) -->
+        <!-- STEP 2: Basics + Interactive Vibe Sliders -->
         <section class="step" id="step-2">
-            <span class="eyebrow">First Things First</span>
-            <h2>Tell me about you</h2>
-            <p class="subtitle">Just a few quick details so I can personalize the evening.</p>
+            <span class="eyebrow">Your Style</span>
+            <h2>Set the vibe</h2>
+            <p class="subtitle">Slide each bar so I can match the pace and feel of our date to you.</p>
 
             <div class="form-stack">
                 <div class="field-group">
@@ -46,14 +46,45 @@
                     <input type="text" id="name-input" placeholder="e.g., Emma" oninput="validateStep2()">
                 </div>
 
-                <div class="field-group">
-                    <label for="hometown-input">Where are you from / What are you studying?</label>
-                    <input type="text" id="hometown-input" placeholder="e.g., Utah • Nursing major">
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-title">Planning Style</span>
+                        <span class="slider-badge" id="label-planning">Mix of planned & spontaneous</span>
+                    </div>
+                    <input type="range" id="slider-planning" min="1" max="5" value="3" oninput="updateSlider('planning')">
+                    <div class="slider-poles">
+                        <span>Go with the flow</span>
+                        <span>Thought-out plan</span>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-title">Evening Pace</span>
+                        <span class="slider-badge" id="label-pace">Balanced pace</span>
+                    </div>
+                    <input type="range" id="slider-pace" min="1" max="5" value="3" oninput="updateSlider('pace')">
+                    <div class="slider-poles">
+                        <span>Cozy & low-key</span>
+                        <span>Active & adventurous</span>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-title">Conversation Energy</span>
+                        <span class="slider-badge" id="label-convo">Mix of laughs & depth</span>
+                    </div>
+                    <input type="range" id="slider-convo" min="1" max="5" value="3" oninput="updateSlider('convo')">
+                    <div class="slider-poles">
+                        <span>Laughs & banter</span>
+                        <span>Deep talks</span>
+                    </div>
                 </div>
 
                 <div class="field-group">
-                    <label for="dietary-input">Any allergies or food preferences?</label>
-                    <input type="text" id="dietary-input" placeholder="e.g., Gluten-free, love spicy food, no allergies">
+                    <label for="dietary-input">Any allergies or food notes? <span class="hint">(optional)</span></label>
+                    <input type="text" id="dietary-input" placeholder="e.g., Gluten-free, love spicy food, no seafood">
                 </div>
             </div>
 
@@ -63,45 +94,39 @@
             </div>
         </section>
 
-        <!-- STEP 3: Mutual-Style Profile Questions -->
+        <!-- STEP 3: Thoughtful Story-Starter Prompts -->
         <section class="step" id="step-3">
-            <span class="eyebrow">Profile Snapshot</span>
-            <h2>What's your vibe?</h2>
-            <p class="subtitle">Pick up to 5 interests and answer a quick prompt.</p>
+            <span class="eyebrow">Get to Know You</span>
+            <h2>Pick a conversation starter</h2>
+            <p class="subtitle">Choose one question that sounds fun to answer—no essay required.</p>
 
             <div class="form-stack">
-                <div class="field-group">
-                    <label>Your Interests <span class="required">*</span> <span class="hint" id="interest-counter">(0/5 selected)</span></label>
-                    <div class="chip-grid" id="interest-chips">
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Pickleball')">🏓 Pickleball</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Hiking')">🥾 Hiking</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Soda Runs')">🥤 Soda Runs</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Live Music')">🎸 Live Music</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Baking & Cooking')">🍪 Baking</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Board Games')">🎲 Board Games</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Road Trips')">🚗 Road Trips</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Movies')">🎬 Movies</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Photography')">📸 Photography</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Reading')">📚 Reading</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Fitness')">🏋️‍♀️ Fitness</button>
-                        <button type="button" class="chip" onclick="toggleInterest(this, 'Art & Crafts')">🎨 Art & Crafts</button>
-                    </div>
+                <div class="prompt-picker" id="prompt-picker">
+                    <button type="button" class="prompt-option" onclick="selectPrompt(this, 'What is something you are genuinely looking forward to right now?')">
+                        What's something you're genuinely looking forward to right now?
+                    </button>
+                    <button type="button" class="prompt-option" onclick="selectPrompt(this, 'What does your ideal slow weekend morning look like?')">
+                        What does your ideal slow weekend morning look like?
+                    </button>
+                    <button type="button" class="prompt-option" onclick="selectPrompt(this, 'What is a topic, hobby, or niche interest you could talk about for hours?')">
+                        What's a topic, hobby, or niche interest you could talk about for hours?
+                    </button>
+                    <button type="button" class="prompt-option" onclick="selectPrompt(this, 'What is a small, everyday thing that instantly puts you in a good mood?')">
+                        What's a small, everyday thing that instantly puts you in a good mood?
+                    </button>
+                    <button type="button" class="prompt-option" onclick="selectPrompt(this, 'What is a trip, tradition, or memory that always makes you smile?')">
+                        What's a trip, tradition, or memory that always makes you smile?
+                    </button>
+                </div>
+
+                <div class="field-group" id="prompt-answer-group" style="display: none;">
+                    <label for="prompt-answer" id="prompt-answer-label">Your answer <span class="required">*</span></label>
+                    <textarea id="prompt-answer" rows="3" placeholder="Share as much or as little as you'd like..." oninput="validateStep3()"></textarea>
                 </div>
 
                 <div class="field-group">
-                    <label for="prompt-select">Pick a prompt <span class="required">*</span></label>
-                    <select id="prompt-select" onchange="validateStep3()">
-                        <option value="My go-to soda or treat order is...">My go-to soda or treat order is...</option>
-                        <option value="My ideal Saturday looks like...">My ideal Saturday looks like...</option>
-                        <option value="A quick way to win me over is...">A quick way to win me over is...</option>
-                        <option value="I could talk for hours about...">I could talk for hours about...</option>
-                        <option value="Two truths and a lie about me:">Two truths and a lie about me:</option>
-                    </select>
-                </div>
-
-                <div class="field-group">
-                    <label for="prompt-answer">Your Answer <span class="required">*</span></label>
-                    <textarea id="prompt-answer" rows="3" placeholder="Write your answer here..." oninput="validateStep3()"></textarea>
+                    <label for="currently-input">Currently obsessed with <span class="hint">(a show, song, book, or treat — optional)</span></label>
+                    <input type="text" id="currently-input" placeholder="e.g., Rewatching New Girl, iced matcha, or a great book">
                 </div>
             </div>
 
@@ -197,7 +222,7 @@
         <section class="step" id="step-6">
             <span class="eyebrow">Save the Date</span>
             <h2>When works best?</h2>
-            <p class="subtitle">We'll generate a calendar invite for you on the next screen.</p>
+            <p class="subtitle">You'll be able to add this straight to Google Calendar or download a calendar file next.</p>
 
             <div class="form-stack">
                 <div class="field-group">
@@ -228,11 +253,11 @@
             </div>
         </section>
 
-        <!-- STEP 7: Summary & .ICS Download -->
+        <!-- STEP 7: Summary & Calendar Export -->
         <section class="step" id="step-7">
             <span class="eyebrow">Confirmed</span>
             <h2 id="summary-heading">It's a Date!</h2>
-            <p class="subtitle">Add this to your calendar below, or copy the details to text me.</p>
+            <p class="subtitle">Save it to your calendar in one click, or copy the summary to send to me.</p>
 
             <div class="summary-card">
                 <div class="summary-section">
@@ -258,18 +283,26 @@
                 <div class="summary-divider"></div>
 
                 <div class="summary-section">
-                    <h4>About <span id="summary-name">You</span></h4>
-                    <p class="summary-meta" id="summary-hometown" style="display: none;"></p>
-                    <div class="summary-chips" id="summary-interests"></div>
+                    <h4><span id="summary-name">Your</span> Vibe & Notes</h4>
+                    <div class="summary-chips" id="summary-vibes"></div>
+
                     <div class="prompt-card">
                         <span class="prompt-q" id="summary-prompt-q"></span>
                         <p class="prompt-a" id="summary-prompt-a"></p>
+                    </div>
+
+                    <div class="currently-pill" id="summary-currently-row" style="display: none;">
+                        <strong>Currently into:</strong> <span id="summary-currently"></span>
                     </div>
                 </div>
             </div>
 
             <div class="export-actions">
-                <button class="btn primary-btn full-width" onclick="downloadICS()">📅 Add to Calendar (.ics)</button>
+                <div class="calendar-btn-row">
+                    <button class="btn primary-btn" onclick="openGoogleCalendar()">📅 Google Calendar</button>
+                    <button class="btn outline-primary-btn" onclick="downloadICS()">⬇️ Download .ics</button>
+                </div>
+                <p class="calendar-helper">Google Calendar opens directly in your browser. Use <code>.ics</code> for Apple Calendar or Outlook.</p>
                 <button class="btn secondary-btn full-width" id="copy-btn" onclick="copySummary()">📋 Copy Details to Text Me</button>
             </div>
 
